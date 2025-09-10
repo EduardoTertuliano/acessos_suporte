@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SantSystem.</title>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            --cor-fundo: #0a0a1a;
+            --cor-primaria: #00e6e6; /* Ciano vibrante */
+            --cor-secundaria: #8a2be2; /* Azul violeta */
+            --cor-texto: #e0e0e0;
+            --cor-borda: #00ffff;
+            --cor-destaque: #33ccff;
+            --cor-sombra: #00ffff;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: linear-gradient(135deg, var(--cor-fundo), #1a0a2a);
+            color: var(--cor-texto);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            flex-direction: column;
+        }
+
+        /* Efeito de partículas no fundo */
+        .background-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(0, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: moveParticle 10s infinite linear;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+        }
+
+        @keyframes moveParticle {
+            0% { transform: translate(0, 0); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)); opacity: 0; }
+        }
+
+        .container {
+            background: rgba(10, 10, 26, 0.8);
+            border: 2px solid var(--cor-borda);
+            border-radius: 15px;
+            box-shadow: 0 0 40px var(--cor-sombra);
+            padding: 40px;
+            text-align: center;
+            max-width: 900px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            animation: fadeIn 1.5s ease-out;
+            margin: 50px auto;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cor-primaria);
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--cor-destaque), 0 0 30px var(--cor-secundaria);
+            letter-spacing: 2px;
+            animation: glitch 1s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0 0 15px var(--cor-destaque); }
+            50% { text-shadow: 0 0 18px var(--cor-destaque), 5px 0 0 var(--cor-secundaria); }
+            100% { text-shadow: 0 0 15px var(--cor-destaque), -3px 0 0 var(--cor-primaria); }
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .link-card {
+            background: linear-gradient(45deg, rgba(0, 200, 200, 0.1), rgba(138, 43, 226, 0.1));
+            border: 1px solid var(--cor-borda);
+            border-radius: 10px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, var(--cor-destaque) 0%, transparent 40%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .link-card:hover::before {
+            opacity: 0.15;
+        }
+
+        .link-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--cor-primaria);
+            box-shadow: 0 0 25px var(--cor-destaque), 0 0 50px var(--cor-secundaria);
+            background: linear-gradient(45deg, rgba(0, 200, 200, 0.2), rgba(138, 43, 226, 0.2));
+        }
+
+        .link-card a {
+            color: var(--cor-texto);
+            text-decoration: none;
+            font-size: 1.2em; /* Decreased from 1.4em */
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 18px; /* Decreased from 25px */
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        .link-card a:hover {
+            color: var(--cor-primaria);
+            text-shadow: 0 0 10px var(--cor-destaque);
+        }
+
+        /* Ajustes para os elementos dentro do link */
+        .link-card .icon {
+            font-size: 2.5em; /* Decreased from 3em */
+            color: var(--cor-primaria);
+            margin-bottom: 8px; /* Decreased from 10px */
+            filter: drop-shadow(0 0 5px var(--cor-destaque));
+            transition: transform 0.3s ease;
+        }
+
+        .link-card:hover .icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .link-card p {
+            font-size: 0.8em; /* Decreased from 0.9em */
+            color: rgba(224, 224, 224, 0.7);
+            margin-top: 5px;
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.8em;
+            color: rgba(224, 224, 224, 0.5);
+            position: relative;
+            z-index: 1;
+            padding-bottom: 20px;
+        }
+
+        /* Media Queries para responsividade */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            .container {
+                padding: 25px;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .link-card a {
+                font-size: 1em; /* Further decreased for smaller screens */
+                padding: 15px; /* Further decreased for smaller screens */
+            }
+            
+            .link-card .icon {
+                font-size: 2em; /* Adjusted for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2em;
+            }
+            .link-card a {
+                font-size: 0.9em; /* Adjusted for very small screens */
+                padding: 12px;
+            }
+            .link-card .icon {
+                font-size: 1.8em; /* Adjusted for very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="background-particles" id="background-particles"></div>
+<div class="container">
+<header>
+<h1>SantSystem</h1>
+<p>Facilidade para acessar ferramentas utilizadas diariamente.</p>
+</header>
+<section class="links-grid">
+<div class="link-card">
+<a href="https://santsystem-web-3-0-git.vercel.app/chamados" target="_blank">
+<span class="icon">🛠️</span>
+      CHAMADOS - PORTAL INTERNO
+      <p>Controle interno dos chamados técnicos e solicitações.</p>
+</a>
+</div>
+<div class="link-card">
+<a href="https://portal.chatbotmaker.io/#/chatbot/cb63546586/messaging/" target="_blank">
+<span class="icon"><img alt="" src="https://portal.chatbotmaker.io/images/suri-cbm-logo-blue.png"/></span>
+                    CHAT SURI
+                    <p>Plataforma de atendimento via chat.</p>
+</a>
+</div>
+<div class="link-card">
+<a href="https://santsystem.com.br/" target="_blank">
+<span class="icon">📊</span>
+                    PORTAL SANTSYSTEM
+                    <p>Acesse o sistema ERP online da Santsystem.</p>
+</a>
+</div>
+<div class="link-card">
+<a href="https://santsystem.ddns.net:8080/" target="_blank">
+<span class="icon">💻</span>
+                    ARQUIVOS
+                    <p>Sistema para download de arquivos necessários para instalaçõs.</p>
+</a>
+</div>
+<div class="link-card">
+<a href="https://validador.nfe.tecnospeed.com.br/" target="_blank">
+<span class="icon">📃</span>
+                    VALIDADOR NF-e TECNOSPEED
+                    <p>Ferramenta para validação de notas fiscais eletrônicas.</p>
+</a>
+</div>
+<div class="link-card">
+<a href="http://www.nfce.fazenda.sp.gov.br/NFCePortal/" target="_blank">
+<span class="icon">💸</span>
+                    PORTAL NF-e SP
+                    <p>Consulta e informações sobre NFC-e da Secretaria da Fazenda de SP.</p>
+</a>
+</div>
+<div class="link-card">
+<a href="https://www.invertexto.com/contador-caracteres" target="_blank">
+<span class="icon">🧮</span>
+                    CONTADOR DE CARACTERES
+                    <p>Utilitário online para contagem de caracteres e palavras.</p>
+</a>
+</div>
+<div class="link-card">
+<a href="file:///C:/Users/User/OneDrive/Documentos/ramais.html" target="_blank">
+<span class="icon">📞</span>
+                    RAMAIS
+                    <p>Lista de contatos e ramais internos da empresa.</p>
+</a>
+</div>
+<div class="link-card">
+<a href="https://docs.google.com/forms/d/e/1FAIpQLScja8swnscVWp58J2qwico6-sHj62HX_FfkGL52ayTn5ZmKGg/viewform" target="_blank">
+<span class="icon">📝</span>
+        CHECK LIST SPW
+        <p>Check list para instalação do spw.</p>
+</a>
+</div>
+<div class="link-card"><a href="https://mailpro.uol.com.br/" target="_blank"><span class="icon">📧</span> E-MAIL SANTSYSTEM<p>Acesso ao sistema de e-mail corporativo da Santsystem.</p></a></div><div class="link-card"><a href="https://docs.google.com/spreadsheets/d/1mF6XXjvzwVUK1zeLErOGs6UYn3Nf6rNNXawSuEjeoqA/edit?pli=1&amp;gid=1673913805#gid=1673913805" target="_blank"><span class="icon">📑</span> TABELA DE CLIENTES PARA ENVIO DE XML<p>Planilha de clientes para controle e envio de arquivos XML.</p></a></div></section>
+<footer>
+<p>© 2025 Santsystem. Todos os direitos reservados. Desenvolvido por Eduardo Tertuliano.</p>
+</footer>
+</div>
+<script>
+        // JavaScript para criar partículas no fundo
+        const particlesContainer = document.getElementById('background-particles');
+        const numberOfParticles = 50; // Ajuste para mais ou menos partículas
+
+        for (let i = 0; i < numberOfParticles; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 5 + 2; // Tamanho entre 2px e 7px
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${Math.random() * 10 + 5}s`; // Duração da animação entre 5s e 15s
+            particle.style.animationDelay = `${Math.random() * -10}s`; // Atraso negativo para iniciar em diferentes fases
+            
+            // Variáveis CSS para a animação das partículas
+            particle.style.setProperty('--x', `${(Math.random() - 0.5) * 200}px`);
+            particle.style.setProperty('--y', `${(Math.random() - 0.5) * 200}px`);
+
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>

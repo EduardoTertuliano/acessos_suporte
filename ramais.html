@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Ramais Santsystem</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a2e);
+      color: #f0f0f0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00f2ff;
+      text-shadow: 0 0 5px #00f2ff;
+    }
+
+    footer {
+      float: right;
+      padding-right: 32pt;
+      font-size: 14;
+      color: #00f2ff;
+      text-shadow: 0 0 5px #00f2ff;
+    }
+
+    #search {
+      display: block;
+      margin: 0 auto 20px auto;
+      padding: 12px;
+      width: 50%;
+      font-size: 16px;
+      border: 2px solid #00f2ff;
+      border-radius: 8px;
+      background-color: #111;
+      color: #fff;
+      box-shadow: 0 0 10px #00f2ff40;
+      transition: 0.3s;
+    }
+
+    #search:focus {
+      outline: none;
+      box-shadow: 0 0 15px #00f2ff80;
+    }
+
+    table {
+      width: 80%;
+      margin: 0 auto 30px auto;
+      border-collapse: collapse;
+      background-color: #111;
+      box-shadow: 0 0 15px #00f2ff40;
+      border-radius: 10px;
+      overflow: hidden;
+      animation: fadeIn 1s ease-in;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 12px;
+      text-align: left;
+      color: #ccc;
+    }
+
+    th {
+      background-color: #222;
+      color: #00f2ff;
+    }
+
+    form {
+      width: 50%;
+      margin: 0 auto;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #00f2ff40;
+    }
+
+    form input, form button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      transition: 0.3s;
+    }
+
+    form input {
+      background-color: #1c1c1c;
+      color: #fff;
+      border: 2px solid #333;
+    }
+
+    form input:focus {
+      outline: none;
+      border-color: #00f2ff;
+      box-shadow: 0 0 8px #00f2ff80;
+    }
+
+    form button {
+      background: linear-gradient(90deg, #00f2ff, #8a2be2);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00f2ff40;
+    }
+
+    form button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #00f2ff80;
+    }
+
+    .action-btn {
+      margin-right: 5px;
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 6px;
+      transition: 0.3s;
+      border: none;
+    }
+
+    .edit-btn {
+      background: #00bfff;
+      color: #000000;
+      box-shadow: 0 0 5px #00bfff50;
+    }
+
+    .edit-btn:hover {
+      background: #009acd;
+      box-shadow: 0 0 10px #00bfff90;
+    }
+
+    .delete-btn {
+      background: #ff0505;
+      color: hsl(0, 100%, 1%);
+      box-shadow: 0 0 5px #ff004f50;
+    }
+
+    .delete-btn:hover {
+      background: #d00040;
+      box-shadow: 0 0 10px #ff004f90;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logged-in-effect {
+      animation: loggedIn 0.5s ease-out forwards;
+    }
+
+    @keyframes loggedIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .logged-out-effect {
+      animation: loggedOut 0.5s ease-out forwards;
+    }
+
+    @keyframes loggedOut {
+      from { transform: scale(1.1); opacity: 0.8; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    /* Initially hide the 'Ações' column header and cells */
+    #ramais-table th:last-child,
+    #ramais-table td:last-child {
+      display: none;
+    }
+
+    #logoff-btn {
+      background: #ff0505;
+      color: #fff;
+      box-shadow: 0 0 10px #ff004f80;
+    }
+
+    #logoff-btn:hover {
+      background: #d00040;
+      box-shadow: 0 0 15px #ff004f90;
+    }
+
+    /* Efeitos de hover para botões gerais */
+    button {
+      transition: all 0.3s ease; /* Transição suave para todas as propriedades */
+    }
+
+    button:hover {
+      transform: translateY(-2px); /* Leve levantamento */
+      box-shadow: 0 4px 15px rgba(0, 242, 255, 0.6); /* Sombra mais intensa */
+    }
+
+    /* Efeito de hover específico para o botão de login/toggle */
+    #auth-button:hover {
+      background-color: #00e6ee; /* Uma cor um pouco mais clara */
+      box-shadow: 0 0 15px #00f2ffaa;
+    }
+
+    /* Efeito de hover específico para o botão de logoff */
+    #logoff-btn:hover {
+      background-color: #e6004c; /* Uma cor um pouco mais clara */
+      box-shadow: 0 0 15px #ff004fcc;
+    }
+
+    /* Efeitos de hover para os botões de ação na tabela */
+    .action-btn:hover {
+      transform: scale(1.05); /* Leve aumento no tamanho */
+      filter: brightness(1.1); /* Um pouco mais brilhante */
+    }
+
+    .edit-btn:hover {
+      background: #009acd;
+      box-shadow: 0 0 10px #00bfff90;
+    }
+
+    .delete-btn:hover {
+      background: #d00040;
+      box-shadow: 0 0 10px #ff004f90;
+    }
+
+    /* Efeito de hover para o botão de adicionar ramal */
+    form button[type="submit"]:hover {
+      transform: scale(1.02); /* Leve aumento para o botão de adicionar */
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.8); /* Sombra mais roxa */
+    }
+  </style>
+</head>
+<body>
+  <h1>📞 Lista de Ramais Santsystem</h1>
+
+  <button id="auth-button" style="position:absolute;top:20px;right:290px;padding:8px 12px;background:#00f2ff;color:#000;border:none;border-radius:8px;cursor:pointer;box-shadow:0 0 10px #00f2ff80;">
+    Fazer Login
+  </button>
+
+  <div id="login-modal" style="display:none;position:absolute;top:20px;right:20px;background:#111;padding:20px;border-radius:10px;box-shadow:0 0 15px #00f2ff80;width:250px;text-align:center;z-index:1000;">
+    <form id="login-form">
+      <h3 style="color:#00f2ff;">🔐 Login</h3>
+      <input type="text" id="login-user" placeholder="Usuário" required style="margin-bottom:10px;width:100%;padding:8px;">
+      <input type="password" id="login-pass" placeholder="Senha" required style="margin-bottom:10px;width:100%;padding:8px;">
+      <button type="submit" style="width:100%;">Entrar</button>
+      <p id="login-error" style="color:red;display:none;margin-top:10px;font-size:14px;">Credenciais inválidas!</p>
+    </form>
+  </div>
+
+  <input type="text" id="search" placeholder="🔍 Buscar por nome...">
+
+  <table id="ramais-table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Ramal</th>
+        <th class="acoes-header">Ações</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <form id="add-form">
+    <h2 style="color:#00f2ff;text-align:center;">➕ Adicionar Novo Ramal</h2>
+    <input type="text" id="nome" placeholder="Nome" required>
+    <input type="text" id="ramal" placeholder="Ramal" required>
+    <button type="submit">Adicionar</button>
+  </form>
+
+  <script>
+    let ramais = JSON.parse(localStorage.getItem('ramais')) || [
+      { nome: 'Rafael', ramal: '6101' },
+      { nome: 'Felipe', ramal: '6102' },
+      { nome: 'Cauan', ramal: '6103' },
+      { nome: 'Vinicius', ramal: '6104' },
+      { nome: 'Everton', ramal: '6105' },
+      { nome: 'Eduardo', ramal: '6107' },
+      { nome: 'V-Tranx', ramal: '6108' },
+      { nome: 'Antonio', ramal: '6109' },
+      { nome: 'Rickson', ramal: '6113' },
+      { nome: 'Kevin', ramal: '6115' },
+      { nome: 'Ivan', ramal: '6106' },
+    ];
+
+    const tbody = document.querySelector('#ramais-table tbody');
+    const authButton = document.getElementById('auth-button');
+    const loginModal = document.getElementById('login-modal');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const addForm = document.getElementById('add-form');
+    const acoesHeader = document.querySelector('#ramais-table .acoes-header');
+
+    let autenticado = false;
+
+    function salvarRamais() {
+      localStorage.setItem('ramais', JSON.stringify(ramais));
+    }
+
+    function renderTabela() {
+      tbody.innerHTML = '';
+      ramais.forEach((r, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${r.nome}</td>
+          <td>${r.ramal}</td>
+          <td class="acoes-cell">
+            <button class="action-btn edit-btn" onclick="editarRamal(${index})">Editar</button>
+            <button class="action-btn delete-btn" onclick="excluirRamal(${index})">Excluir</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+      protegerFuncoes(); // Apply protection after rendering
+    }
+
+    function editarRamal(index) {
+      if (!autenticado) return; // Prevent editing if not authenticated
+      const novoNome = prompt("Editar nome:", ramais[index].nome);
+      const novoRamal = prompt("Editar ramal:", ramais[index].ramal);
+      if (novoNome && novoRamal) {
+        ramais[index].nome = novoNome;
+        ramais[index].ramal = novoRamal;
+        salvarRamais();
+        renderTabela();
+      }
+    }
+
+    function excluirRamal(index) {
+      if (!autenticado) return; // Prevent deleting if not authenticated
+      if (confirm("Deseja realmente excluir este ramal?")) {
+        ramais.splice(index, 1);
+        salvarRamais();
+        renderTabela();
+      }
+    }
+
+    document.getElementById('add-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!autenticado) return; // Prevent adding if not authenticated
+      const nome = document.getElementById('nome').value.trim();
+      const ramal = document.getElementById('ramal').value.trim();
+      if (nome && ramal) {
+        ramais.push({ nome, ramal });
+        salvarRamais();
+        renderTabela();
+        document.getElementById('nome').value = '';
+        document.getElementById('ramal').value = '';
+      }
+    });
+
+    document.getElementById('search').addEventListener('keyup', function () {
+      const filter = this.value.toLowerCase();
+      const rows = document.querySelectorAll('#ramais-table tbody tr');
+      rows.forEach(row => {
+        const nome = row.cells[0].textContent.toLowerCase();
+        row.style.display = nome.includes(filter) ? '' : 'none';
+      });
+    });
+
+    function protegerFuncoes() {
+      const actionCells = document.querySelectorAll('#ramais-table .acoes-cell');
+
+      if (!autenticado) {
+        acoesHeader.style.display = 'none'; // Hide 'Ações' header
+        actionCells.forEach(cell => cell.style.display = 'none'); // Hide 'Ações' cells
+        addForm.style.display = 'none'; // Hide add form
+      } else {
+        acoesHeader.style.display = 'table-cell'; // Show 'Ações' header
+        actionCells.forEach(cell => cell.style.display = 'table-cell'); // Show 'Ações' cells
+        addForm.style.display = 'block'; // Show add form
+      }
+    }
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = document.getElementById('login-user').value.trim();
+      const pass = document.getElementById('login-pass').value.trim();
+      if (user === 'suporte' && pass === 'Sant**3692') {
+        autenticado = true;
+        loginModal.style.display = 'none';
+        loginError.style.display = 'none';
+        authButton.textContent = 'Sair';
+        authButton.id = 'logoff-btn'; // Change ID for styling
+        authButton.style.background = '#ff0505'; // Apply red background
+        authButton.style.boxShadow = '0 0 10px #ff004f80';
+        authButton.classList.add('logged-in-effect'); // Add login effect
+        authButton.classList.remove('logged-out-effect'); // Remove logout effect if present
+        protegerFuncoes();
+        renderTabela();
+      } else {
+        loginError.style.display = 'block';
+        loginModal.classList.add('logged-out-effect'); // Add logout effect for incorrect login
+        setTimeout(() => { // Remove class after animation
+            loginModal.classList.remove('logged-out-effect');
+        }, 500);
+      }
+    });
+
+    authButton.addEventListener('click', function () {
+      if (autenticado) {
+        // Logoff action
+        if (confirm("Deseja realmente sair?")) {
+          autenticado = false;
+          authButton.textContent = 'Fazer Login';
+          authButton.id = 'auth-button'; // Revert ID
+          authButton.style.background = '#00f2ff'; // Revert background
+          authButton.style.boxShadow = '0 0 10px #00f2ff80';
+          authButton.classList.add('logged-out-effect'); // Add logout effect
+          authButton.classList.remove('logged-in-effect'); // Remove login effect if present
+          loginError.style.display = 'none';
+          protegerFuncoes();
+          renderTabela();
+        }
+      } else {
+        // Toggle login modal
+        if (loginModal.style.display === 'none') {
+          loginModal.style.display = 'block';
+          authButton.textContent = 'Esconder Login';
+          loginModal.classList.remove('logged-out-effect'); // Ensure no lingering logout effect
+        } else {
+          loginModal.style.display = 'none';
+          authButton.textContent = 'Fazer Login';
+        }
+      }
+    });
+
+    renderTabela();
+    protegerFuncoes(); // Initial call to hide actions if not logged in
+  </script>
+
+  <footer>
+    Desenvolvido por Eduardo Tertuliano
+  </footer>
+</body>
+</html>
